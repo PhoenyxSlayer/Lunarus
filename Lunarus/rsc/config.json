@@ -1,0 +1,10 @@
+{
+  "owner": "591872467325288448",
+  "token": "YOUR TOKEN HERE",
+  "prefix": "%",
+  "embed": "#d01c1f",
+  "channels":{
+  "welcome": "WELLCOME CHANNEL ID GOES HERE",
+  "botspam": "BOT CHANNEL ID GOES HERE"
+  }
+}
