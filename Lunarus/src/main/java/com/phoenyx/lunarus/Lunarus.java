@@ -2,8 +2,6 @@ package com.phoenyx.lunarus;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.util.EnumSet;
 
 import javax.security.auth.login.LoginException;
@@ -59,23 +57,5 @@ public class Lunarus {
 		builder.setHelpWord(" ");
 		CommandClient client = builder.build();
 		jda.addEventListener(client);
-	}
-	
-	public Connection getConnection() throws Exception{
-		try {
-			String driver = "com.mysql.cj.jdbc.Driver";
-			String url = "jdbc:mysql://24.191.244.19/Lunarus";
-			String username = "Phoenyx";
-			String password = "Killer224";
-			Class.forName(driver);
-			
-			Connection con = DriverManager.getConnection(url, username, password);
-			System.out.println("Connected to Database");
-			return con;
-		}catch(Exception e) {
-			System.out.println(e);
-			e.printStackTrace();
-		}
-		return null;
 	}
 }

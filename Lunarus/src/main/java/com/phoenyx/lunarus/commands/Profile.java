@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.phoenyx.lunarus.Lunarus;
+import com.phoenyx.lunarus.utils.SQLConnector;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
@@ -18,7 +19,7 @@ import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
 
 public class Profile extends Command{
-	private Lunarus main = new Lunarus();
+	private SQLConnector main = new SQLConnector();
 	private JSONObject config = Lunarus.config;
 	
 	public Profile() {
