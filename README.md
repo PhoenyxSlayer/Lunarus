@@ -1,2 +1,2 @@
 # Lunarus
- Hello There
+Hello there, My name is Lunarus!
