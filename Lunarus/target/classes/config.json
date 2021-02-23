@@ -9,7 +9,7 @@
   },
   "SQL":{
   "driver": "com.mysql.cj.jdbc.Driver",
-  //url format = jbdc:mysql://hostip/database
+  "_comment": "url format = jbdc:mysql://hostip/database",
   "url": "jdbc:mysql://localhost/Lunarus",
   "username": "Lunarus",
   "password": "SQL password here"
