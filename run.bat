@@ -1,0 +1,1 @@
+node app.js | java -jar lunarus.jar
