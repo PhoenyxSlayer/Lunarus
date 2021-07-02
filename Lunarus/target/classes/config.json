@@ -1,17 +1,21 @@
 {
-  "owner": "BOT ID GOES HERE",
-  "token": "YOUR TOKEN HERE",
-  "prefix": "%",
-  "embed": "#d01c1f",
+  "owner": "Your ID Here",
+  "lunarus": "Bot ID Here",
+  "token": "Bot Token Here",
+  "prefix": "Prefix Here",
+  "embed": "Hex Color Code Here",
   "channels":{
-  "welcome": "WELLCOME CHANNEL ID GOES HERE",
-  "botspam": "BOT CHANNEL ID GOES HERE"
+  "welcome": "Welcome Channel ID Here",
+  "rules": "Rules Channel ID Here",
+  "roles": "Roles Channel ID Here",
+  "introductions": "Introductions Channel ID Here",
+  "logs": "Logs Channel ID Here"
   },
   "SQL":{
-  "driver": "com.mysql.cj.jdbc.Driver",
-  "_comment": "url format = jbdc:mysql://hostip/database",
-  "url": "jdbc:mysql://localhost/Lunarus",
-  "username": "Lunarus",
-  "password": "SQL password here"
+  "address": "Database IP Address Here",
+  "port": "Database Port Here",
+  "database": "Database Name Here",
+  "username": "Database Username Here",
+  "password": "Database Password Here"
   }
 }

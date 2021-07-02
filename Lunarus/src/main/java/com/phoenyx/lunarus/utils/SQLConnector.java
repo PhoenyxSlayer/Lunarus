@@ -12,14 +12,21 @@ public class SQLConnector {
 	
 	public Connection getConnection() throws Exception{
 		try {
-			String driver = config.getJSONObject("SQL").getString("driver");
-			String url = config.getJSONObject("SQL").getString("url");
-			String username = config.getJSONObject("SQL").getString("username");
+			String driver = "com.mysql.cj.jdbc.Driver";
+			String address = config.getJSONObject("SQL").getString("address");
+			String database = config.getJSONObject("SQL").getString("database");
+			String port = config.getJSONObject("SQL").getString("port");
+			String user = config.getJSONObject("SQL").getString("username");
 			String password = config.getJSONObject("SQL").getString("password");
 			Class.forName(driver);
 			
-			Connection con = DriverManager.getConnection(url, username, password);
-			System.out.println("Connected to Database");
+			Connection con = DriverManager.getConnection("jdbc:mysql://" + address + 
+                    ":" + port + 
+                    "/" + database + 
+                    "?user=" + user + 
+                    "&password=" + password + 
+                    "&serverTimezone=UTC");
+			//System.out.println("Connected to Database");
 			return con;
 		}catch(Exception e) {
 			System.out.println(e);

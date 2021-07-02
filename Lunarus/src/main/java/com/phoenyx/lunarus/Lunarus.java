@@ -10,8 +10,14 @@ import org.json.JSONObject;
 
 import com.jagrosh.jdautilities.command.CommandClient;
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
+import com.phoenyx.lunarus.commands.Help;
 import com.phoenyx.lunarus.commands.Profile;
 import com.phoenyx.lunarus.commands.ServerInfo;
+import com.phoenyx.lunarus.commands.modcommands.Ban;
+import com.phoenyx.lunarus.commands.modcommands.Kick;
+import com.phoenyx.lunarus.commands.modcommands.Purge;
+import com.phoenyx.lunarus.commands.modcommands.RemoveWarn;
+import com.phoenyx.lunarus.commands.modcommands.Warn;
 import com.phoenyx.lunarus.events.JoinEvent;
 import com.phoenyx.lunarus.events.LeaveEvents;
 import com.phoenyx.lunarus.events.MessageEvent;
@@ -25,9 +31,9 @@ import net.dv8tion.jda.api.utils.MemberCachePolicy;
 
 public class Lunarus {
 	private static JDA jda;
-	private static File configFile = new File("rsc/config.json");
+	private static File configFile = new File("config.json");
 	public static JSONObject config = new JSONObject();
-	
+			
 	public static void main(String[] args){
 		try {
 			  config = JSONUtils.readJSON(configFile);
@@ -37,7 +43,7 @@ public class Lunarus {
 			}
 		
 		JDABuilder b = JDABuilder.createDefault(config.getString("token"));
-		b.setActivity(Activity.streaming("Suffering", "https://twitch.tv/LunarusChan"));
+		b.setActivity(Activity.playing(""+config.getString("prefix")+"help"));
 		b.enableIntents(EnumSet.allOf(GatewayIntent.class));
 		b.setMemberCachePolicy(MemberCachePolicy.ALL);
 		b.addEventListeners(new JoinEvent(), new LeaveEvents(), new MessageEvent());
@@ -53,9 +59,11 @@ public class Lunarus {
 		CommandClientBuilder builder = new CommandClientBuilder();
 		builder.setOwnerId(config.getString("owner"));
 		builder.setPrefix(config.getString("prefix"));
-		builder.addCommands(new ServerInfo(), new Profile());
+		builder.addCommands(new ServerInfo(), new Profile(), new Kick(), new Ban(), new Help(), new Purge(), new Warn(), new RemoveWarn());
 		builder.setHelpWord(" ");
 		CommandClient client = builder.build();
 		jda.addEventListener(client);
+		
+		System.out.println("Lunarus is Online!");
 	}
 }

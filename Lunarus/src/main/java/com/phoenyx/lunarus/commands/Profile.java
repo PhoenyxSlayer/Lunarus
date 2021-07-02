@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.json.JSONObject;
@@ -35,12 +36,14 @@ public class Profile extends Command{
 		int feathers = 0;
 		try {
 			Connection con = main.getConnection();
-			PreparedStatement s = con.prepareStatement("SELECT * FROM feathers WHERE userid = '"+userId+"' AND serverid = '"+guildId+"'");
+			PreparedStatement s = con.prepareStatement("SELECT * FROM points WHERE userid = '"+userId+"' AND serverid = '"+guildId+"'");
 			ResultSet r = s.executeQuery();
 			
-			while(r.next()) {
-				feathers = r.getInt("feathers");
+			if(r.next()) {
+				feathers = r.getInt("points");
 				
+				sendEmbed(channel, member, feathers);
+			}else {
 				sendEmbed(channel, member, feathers);
 			}
 		}catch(Exception e) {
@@ -54,8 +57,10 @@ public class Profile extends Command{
 		b.setAuthor(member.getUser().getAsTag(), member.getUser().getAvatarUrl(), member.getUser().getAvatarUrl());
 		b.setThumbnail(member.getUser().getAvatarUrl());
 		b.setColor(Color.decode(config.getString("embed")));
+		b.addField("Joined Discord", ""+member.getTimeCreated().format(DateTimeFormatter.ISO_LOCAL_DATE)+" at "+member.getTimeCreated().format(DateTimeFormatter.ISO_LOCAL_TIME)+"", true);
+		b.addField("Joined Server", ""+member.getTimeJoined().format(DateTimeFormatter.ISO_LOCAL_DATE)+" at "+member.getTimeJoined().format(DateTimeFormatter.ISO_LOCAL_TIME)+"", true);
 		b.addField("\t"+member.getEffectiveName()+"'s roles", ""+roles(member)+"", false);
-		b.addField("Points", ""+feathers+" Feathers", true);
+		b.addField("Points", ""+feathers+" Feathers", false);
 		channel.sendMessage(b.build()).queue();
 	}
 	
@@ -64,15 +69,17 @@ public class Profile extends Command{
 		String roles = "";
 		int openP = 0, closedP = 0;
 		
-		for(int i = 0; i < roleInput.size(); i++) {
-			for(int j = 0; j < roleInput.get(i).toString().length(); j++) {
-				openP = roleInput.get(i).toString().indexOf('(');
-				closedP = roleInput.get(i).toString().indexOf(')');
-			}
-			roles += ("<@&"+roleInput.get(i).toString().substring(openP + 1, closedP)+"> ");
-		}
-		roles = roles.substring(0, roles.length() - 1);
-		System.out.println(roles);
+		if(!roleInput.isEmpty()) {
+			for(int i = 0; i < roleInput.size(); i++) {
+				for(int j = 0; j < roleInput.get(i).toString().length(); j++) {
+					openP = roleInput.get(i).toString().indexOf('(');
+					closedP = roleInput.get(i).toString().indexOf(')');
+					}
+				roles += ("<@&"+roleInput.get(i).toString().substring(openP + 1, closedP)+"> ");
+				}
+			roles = roles.substring(0, roles.length() - 1);
+			}else roles = "none";
+		
 		return roles;
 	}
 }
