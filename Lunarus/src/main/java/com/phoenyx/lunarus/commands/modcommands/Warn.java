@@ -1,4 +1,4 @@
-package com.phoenyx.lunarus.commands.modcommands;
+ package com.phoenyx.lunarus.commands.modcommands;
 
 import java.awt.Color;
 import java.sql.Connection;
@@ -32,8 +32,10 @@ public class Warn extends Command{
 		TextChannel channel = e.getTextChannel();
 		Guild guild = e.getGuild();
 		String args[] = e.getArgs().split(" ");
-		String id = args[0].replaceAll("<@!", "").replaceAll(">", ""), reason = "";
-		Member user = e.getMember(), member = null, errorAuthor = e.getGuild().getMemberById(config.getString("lunarus"));
+		String id = args[0].replaceAll("<@", "").replaceAll(">", ""), reason = "";
+		Member user = e.getMember(), member = null, errorAuthor = e.getSelfMember();
+		
+		id = id.replaceAll("!", "");
 		
 		try {
 			member = e.getGuild().getMemberById(id);
@@ -122,7 +124,7 @@ public class Warn extends Command{
 		b.setColor(Color.RED);
 		b.setDescription("There was an error when running this command");
 		b.addField("Possible Reasons", "•\t***The user you were trying to warn does not exist in this server***\n •\t***There was no user mentioned***\n •\t***A reason for this warning was not specified***", false);
-		b.addField("Proper Usage", ""+config.getString("prefix")+"warn [user] [reason]", false);
+		b.addField("Proper Usage", "`"+config.getString("prefix")+"warn [user] [reason]`", false);
 		channel.sendMessage(b.build()).queue();
 	}
 }

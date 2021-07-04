@@ -30,9 +30,11 @@ public class Kick extends Command{
 	protected void execute(CommandEvent e) {
 		TextChannel channel = e.getTextChannel();
 		String args[] = e.getArgs().split(" "), avatar = e.getMember().getUser().getAvatarUrl(), embedChannel = Lunarus.config.getJSONObject("channels").getString("welcome");
-		String id = args[0].replaceAll("<@!", "").replaceAll(">", "");
-		Member user = e.getMember(), member = null, errorAuthor = e.getGuild().getMemberById(config.getString("lunarus"));
+		String id = args[0].replaceAll("<@", "").replaceAll(">", "");
+		Member user = e.getMember(), member = null, errorAuthor = e.getSelfMember();
 		Guild guild = e.getGuild();
+		
+		id = id.replaceAll("!", "");
 
 		try {
 			member = guild.getMemberById(id);
@@ -112,7 +114,7 @@ public class Kick extends Command{
 		b.setColor(Color.RED);
 		b.setDescription("There was an error when running this command");
 		b.addField("Possible Reasons", "•\t***The user you were trying to kick does not exist in this server***\n •\t***There was no user mentioned***\n •\t***A reason for kicking this user was not specified***", false);
-		b.addField("Proper Usage", ""+config.getString("prefix")+"kick [user] [reason]", false);
+		b.addField("Proper Usage", "`"+config.getString("prefix")+"kick [user] [reason]`", false);
 		channel.sendMessage(b.build()).queue();
 	}
 }

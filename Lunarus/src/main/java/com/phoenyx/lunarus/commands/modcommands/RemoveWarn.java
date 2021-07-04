@@ -33,8 +33,21 @@ public class RemoveWarn extends Command{
 		TextChannel channel = e.getTextChannel();
 		Guild guild = e.getGuild();
 		String args[] = e.getArgs().split(" ");
-		String id = args[0].replaceAll("<@!", "").replaceAll(">", "");
-		Member user = e.getMember(), member = e.getGuild().getMemberById(id);
+		String id = args[0].replaceAll("<@", "").replaceAll(">", "");
+		Member user = e.getMember(), member = null, errorAuthor = e.getSelfMember();
+		
+		id = id.replaceAll("!", "");
+		
+		try {
+			member = e.getGuild().getMemberById(id);
+			if(!guild.getMembers().contains(member)) {
+				commandError(errorAuthor, channel);
+				return;
+			}
+		}catch(Exception er) {
+			commandError(errorAuthor, channel);
+			return;
+		}
 		
 		if(!user.hasPermission(Permission.MANAGE_ROLES)) {
 			channel.sendMessage("You do not have permission to use this command").queue();
@@ -89,6 +102,18 @@ public class RemoveWarn extends Command{
 		b.addField("Warning removed by", user.getEffectiveName(), true);
 		b.addField("Current warnings", ""+warns+"", true);
 		guild.getTextChannelById(config.getJSONObject("channels").getString("logs")).sendMessage(b.build()).queue();
+		channel.sendMessage(b.build()).queue();
+	}
+	
+	private void commandError(Member author, TextChannel channel) {
+		EmbedBuilder b = new EmbedBuilder();
+		
+		b.setTitle("Command Execution Error");
+		b.setAuthor(author.getEffectiveName(), author.getUser().getAvatarUrl(), author.getUser().getAvatarUrl());
+		b.setColor(Color.RED);
+		b.setDescription("There was an error when running this command");
+		b.addField("Possible Reasons", "•\t***The user you were trying to remove a warn does not exist in this server***\n •\t***There was no user mentioned***", false);
+		b.addField("Proper Usage", "`"+config.getString("prefix")+"removewarn [user] [reason]`", false);
 		channel.sendMessage(b.build()).queue();
 	}
 }

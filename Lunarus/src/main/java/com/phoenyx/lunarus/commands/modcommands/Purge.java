@@ -30,14 +30,14 @@ public class Purge extends Command{
 	public void execute(CommandEvent e) {
 		String args[] = e.getArgs().split(" ");
 		int num = 0;
-		Member member = e.getMember(), errorAuthor = e.getGuild().getMemberById(config.getString("lunarus"));
+		Member member = e.getMember(), errorAuthor = e.getSelfMember();
 		TextChannel channel = e.getTextChannel();
 		
 		if(!member.hasPermission(Permission.MESSAGE_MANAGE)) return;
 
 		e.getMessage().delete().queue();
 		try {
-			TimeUnit.MILLISECONDS.sleep(100);
+			TimeUnit.MILLISECONDS.sleep(150);
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
