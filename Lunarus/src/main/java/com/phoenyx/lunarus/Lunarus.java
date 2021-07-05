@@ -19,7 +19,7 @@ import com.phoenyx.lunarus.commands.modcommands.Purge;
 import com.phoenyx.lunarus.commands.modcommands.RemoveWarn;
 import com.phoenyx.lunarus.commands.modcommands.Warn;
 import com.phoenyx.lunarus.events.JoinEvent;
-import com.phoenyx.lunarus.events.LeaveEvents;
+import com.phoenyx.lunarus.events.LeaveEvent;
 import com.phoenyx.lunarus.events.MessageEvent;
 import com.phoenyx.lunarus.utils.JSONUtils;
 
@@ -46,7 +46,7 @@ public class Lunarus {
 		b.setActivity(Activity.playing(""+config.getString("prefix")+"help"));
 		b.enableIntents(EnumSet.allOf(GatewayIntent.class));
 		b.setMemberCachePolicy(MemberCachePolicy.ALL);
-		b.addEventListeners(new JoinEvent(), new LeaveEvents(), new MessageEvent());
+		b.addEventListeners(new JoinEvent(), new LeaveEvent(), new MessageEvent());
 		
 		try {
 			jda = b.build();

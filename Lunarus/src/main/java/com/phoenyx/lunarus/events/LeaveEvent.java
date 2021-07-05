@@ -8,7 +8,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
-public class LeaveEvents extends ListenerAdapter{
+public class LeaveEvent extends ListenerAdapter{
 	String reason = "";
 	
 	public void onGuildMemberRemove(GuildMemberRemoveEvent e) {

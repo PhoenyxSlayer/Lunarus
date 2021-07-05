@@ -28,7 +28,8 @@ public class JoinEvent extends ListenerAdapter{
 		b.setThumbnail(avatar);
 		//b.setColor(Color.decode(embed));
 		b.setDescription("Make yourself at home! I hope you'll enjoy your stay and behave!");
-		b.addField("Who Joined? ", ""+e.getUser().getAsMention()+"\n They are the "+memberCount+"th visitor", false);
+		b.addField("Who Joined? ", e.getUser().getAsMention(), true);
+		b.addField("Member #", ""+memberCount+"", true);
 		b.addField("What to do now?", "**1.** Read the <#"+channel.getString("rules")+">\n**2.** Pick your roles in the <#"+channel.getString("roles")+"> (optional)\n**3.** Post an intro in <#"+channel.getString("introductions")+"> (optional)\n**4.** Make friends, have fun, be nice!", false);
 		e.getGuild().getTextChannelById(channel.getString("welcome")).sendMessage(b.build()).queue();
 		
