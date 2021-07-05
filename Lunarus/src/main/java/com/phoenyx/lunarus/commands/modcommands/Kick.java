@@ -89,8 +89,9 @@ public class Kick extends Command{
 		
 		 b.setTitle("Follow the rules next time!");
 		 b.setAuthor(member.getEffectiveName(), avatar, avatar);
+		 b.setThumbnail(member.getUser().getAvatarUrl());
 		 b.setColor(Color.decode(config.getString("embed")));
-		 b.setDescription(""+member.getEffectiveName()+" has been banned");
+		 b.setDescription(""+member.getEffectiveName()+" has been kicked");
 		 b.addField("Kicked By", user.getEffectiveName(), true);
 		 b.addField("Reason", reason, true);
 		 guild.getTextChannelById(channel).sendMessage(b.build()).queue(r -> {

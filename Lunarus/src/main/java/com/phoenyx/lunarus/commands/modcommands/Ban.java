@@ -89,6 +89,7 @@ public class Ban extends Command{
 		
 		 b.setTitle("You won't be missed...");
 		 b.setAuthor(member.getEffectiveName(), avatar, avatar);
+		 b.setThumbnail(member.getUser().getAvatarUrl());
 		 b.setColor(Color.decode(config.getString("embed")));
 		 b.setDescription(""+member.getEffectiveName()+" has been banned");
 		 b.addField("banned By", user.getEffectiveName(), true);
