@@ -76,6 +76,7 @@ public class Kick extends Command{
 				e1.printStackTrace();
 			}
 			member.kick().queue();
+			reason = "";
 		}
 	}
 	

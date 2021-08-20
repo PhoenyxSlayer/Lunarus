@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import com.jagrosh.jdautilities.command.CommandClient;
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
+import com.phoenyx.lunarus.commands.Daily;
 import com.phoenyx.lunarus.commands.Help;
 import com.phoenyx.lunarus.commands.Profile;
 import com.phoenyx.lunarus.commands.ServerInfo;
@@ -59,7 +60,7 @@ public class Lunarus {
 		CommandClientBuilder builder = new CommandClientBuilder();
 		builder.setOwnerId(config.getString("owner"));
 		builder.setPrefix(config.getString("prefix"));
-		builder.addCommands(new ServerInfo(), new Profile(), new Kick(), new Ban(), new Help(), new Purge(), new Warn(), new RemoveWarn());
+		builder.addCommands(new ServerInfo(), new Profile(), new Kick(), new Ban(), new Help(), new Purge(), new Warn(), new RemoveWarn(), new Daily());
 		builder.setHelpWord(" ");
 		CommandClient client = builder.build();
 		jda.addEventListener(client);
