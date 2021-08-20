@@ -76,6 +76,7 @@ public class Ban extends Command{
 				e1.printStackTrace();
 			}
 			member.ban(7).queue();
+			reason = "";
 		}
 	}
 
