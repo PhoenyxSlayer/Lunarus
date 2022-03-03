@@ -19,6 +19,7 @@ import com.phoenyx.lunarus.commands.modcommands.RemoveWarn;
 import com.phoenyx.lunarus.commands.modcommands.Warn;
 import com.phoenyx.lunarus.events.JoinEvent;
 import com.phoenyx.lunarus.events.LeaveEvent;
+import com.phoenyx.lunarus.events.MessageEvent;
 import com.phoenyx.lunarus.utils.JSONUtils;
 
 import net.dv8tion.jda.api.JDA;
@@ -29,7 +30,7 @@ import net.dv8tion.jda.api.utils.MemberCachePolicy;
 
 public class Lunarus {
 	private static JDA jda;
-	private static File configFile = new File("rsc/config.json");
+	private static File configFile = new File("config.json");
 	public static JSONObject config = new JSONObject();
 			
 	public static void main(String[] args){
@@ -44,7 +45,7 @@ public class Lunarus {
 		b.setActivity(Activity.playing(""+config.getString("prefix")+"help"));
 		b.enableIntents(EnumSet.allOf(GatewayIntent.class));
 		b.setMemberCachePolicy(MemberCachePolicy.ALL);
-		b.addEventListeners(new JoinEvent(), new LeaveEvent());
+		b.addEventListeners(new JoinEvent(), new LeaveEvent(), new MessageEvent());
 		
 		try {
 			jda = b.build();

@@ -3,6 +3,7 @@ package com.phoenyx.lunarus.commands.modcommands;
 import java.awt.Color;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+//import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -67,7 +68,7 @@ public class Purge extends Command{
 		for(int i = 0; i < msgs.size(); i++) {
 			if(msgs.isEmpty()) {
 				return;
-			}else if(msgs.get(i).getTimeCreated().getDayOfYear() <= time.minusWeeks(2).getDayOfYear()) {
+			}else if(msgs.get(i).getTimeCreated().isBefore(time.minusWeeks(2))) {
 				toDelete.add(msgs.get(i));
 			}
 		}

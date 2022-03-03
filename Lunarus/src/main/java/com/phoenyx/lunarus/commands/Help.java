@@ -27,7 +27,7 @@ public class Help extends Command{
 	
 	protected void execute(CommandEvent e) {
 		TextChannel channel = e.getTextChannel();
-		Member member = e.getGuild().getMemberById("591872467325288448");
+		Member member = e.getGuild().getMemberById("720071761403838466");
 		String args[] = e.getArgs().split(" "), help = args[0];
 		
 		switch(help) {
