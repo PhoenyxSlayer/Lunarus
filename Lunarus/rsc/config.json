@@ -1,20 +1,20 @@
-{
-  "owner": "Your ID Here",
-  "token": "Bot Token Here",
-  "prefix": "Prefix Here",
-  "embed": "Hex Color Code Here",
+{ 
+ "owner": "720071761403838466",
+  "token": "OTE0Mzc0OTAxOTc5MzAzOTk2.YaMH_A.QXGW5RIJHEyfyMgEj4rB-9pj2cc",
+  "prefix": "%",
+  "embed": "#FFFF00",
   "channels":{
-  "welcome": "Welcome Channel ID Here",
-  "rules": "Rules Channel ID Here",
-  "roles": "Roles Channel ID Here",
-  "introductions": "Introductions Channel ID Here",
-  "logs": "Logs Channel ID Here"
+  "welcome": "910312870917582975",
+  "rules": "838519278083899393",
+  "roles": "838519312024338433",
+  "introductions": "838531090461097994",
+  "logs": "1069816295073251338"
   },
   "SQL":{
-  "address": "Database IP Address Here",
-  "port": "Database Port Here",
-  "database": "Database Name Here",
-  "username": "Database Username Here",
-  "password": "Database Password Here"
+  "address": "localhost",
+  "port": "3306",
+  "database": "lunarus",
+  "username": "lunarus",
+  "password": "~~Killer_224~~"
   }
 }
