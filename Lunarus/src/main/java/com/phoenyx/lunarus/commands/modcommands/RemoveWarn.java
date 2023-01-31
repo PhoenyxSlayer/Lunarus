@@ -17,7 +17,7 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 
 public class RemoveWarn extends Command{
 	public RemoveWarn() {
@@ -30,7 +30,7 @@ public class RemoveWarn extends Command{
 	private int warns = 0;
 	
 	public void execute(CommandEvent e) {
-		TextChannel channel = e.getTextChannel();
+		MessageChannel channel = e.getTextChannel();
 		Guild guild = e.getGuild();
 		String args[] = e.getArgs().split(" ");
 		String id = args[0].replaceAll("<@", "").replaceAll(">", "");
@@ -90,7 +90,7 @@ public class RemoveWarn extends Command{
 		}
 	}
 	
-	private void embed(Member user, Member member, TextChannel channel, Guild guild) {
+	private void embed(Member user, Member member, MessageChannel channel, Guild guild) {
 		EmbedBuilder b = new EmbedBuilder();
 		String imageUrl = member.getUser().getAvatarUrl();
 		warns--;
@@ -101,19 +101,19 @@ public class RemoveWarn extends Command{
 		b.setDescription(""+member.getEffectiveName()+" ("+member.getAsMention()+") has been warned");
 		b.addField("Warning removed by", user.getEffectiveName(), true);
 		b.addField("Current warnings", ""+warns+"", true);
-		guild.getTextChannelById(config.getJSONObject("channels").getString("logs")).sendMessage(b.build()).queue();
-		channel.sendMessage(b.build()).queue();
+		guild.getTextChannelById(config.getJSONObject("channels").getString("logs")).sendMessageEmbeds(b.build()).queue();
+		channel.sendMessageEmbeds(b.build()).queue();
 	}
 	
-	private void commandError(Member author, TextChannel channel) {
+	private void commandError(Member author, MessageChannel channel) {
 		EmbedBuilder b = new EmbedBuilder();
 		
 		b.setTitle("Command Execution Error");
 		b.setAuthor(author.getEffectiveName(), author.getUser().getAvatarUrl(), author.getUser().getAvatarUrl());
 		b.setColor(Color.RED);
 		b.setDescription("There was an error when running this command");
-		b.addField("Possible Reasons", "•\t***The user you were trying to remove a warn does not exist in this server***\n •\t***There was no user mentioned***", false);
+		b.addField("Possible Reasons", "ï¿½\t***The user you were trying to remove a warn does not exist in this server***\n ï¿½\t***There was no user mentioned***", false);
 		b.addField("Proper Usage", "`"+config.getString("prefix")+"removewarn [user] [reason]`", false);
-		channel.sendMessage(b.build()).queue();
+		channel.sendMessageEmbeds(b.build()).queue();
 	}
 }

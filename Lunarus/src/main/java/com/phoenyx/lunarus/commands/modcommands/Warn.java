@@ -1,4 +1,4 @@
- package com.phoenyx.lunarus.commands.modcommands;
+package com.phoenyx.lunarus.commands.modcommands;
 
 import java.awt.Color;
 import java.sql.Connection;
@@ -17,7 +17,7 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 
 public class Warn extends Command{
 	public Warn() {
@@ -29,7 +29,7 @@ public class Warn extends Command{
 	private int warns = 0;
 	
 	public void execute(CommandEvent e) {
-		TextChannel channel = e.getTextChannel();
+		MessageChannel channel = e.getChannel();
 		Guild guild = e.getGuild();
 		String args[] = e.getArgs().split(" ");
 		String id = args[0].replaceAll("<@", "").replaceAll(">", ""), reason = "";
@@ -82,15 +82,15 @@ public class Warn extends Command{
 			
 			if(!r.next()) {
 				warns = 0;
-				guild.addRoleToMember(member.getId(), warning1).queue();
+				guild.addRoleToMember(member, warning1).queue();
 				sql = "INSERT INTO punishments (user, userid, guild, guildid, warnings, kicks) VALUES ('"+member.getEffectiveName()+"', '"+member.getId()+"', '"+guild.getName()+"', '"+guild.getId()+"', "+1+", "+0+")";
 				s.executeUpdate(sql);
 			}else {
 				warns = r.getInt("warnings");
 				if(warns == 1) {
-					guild.addRoleToMember(member.getId(), warning2).queue();
+					guild.addRoleToMember(member, warning2).queue();
 				}else {
-					guild.addRoleToMember(member.getId(), warning3).queue();
+					guild.addRoleToMember(member, warning3).queue();
 				}
 				sql = "UPDATE punishments SET warnings = "+(warns+1)+" where userid = '"+member.getId()+"' AND guildid = '"+guild.getId()+"'";
 				s.executeUpdate(sql);
@@ -100,7 +100,7 @@ public class Warn extends Command{
 		}
 	}
 	
-	private void warnEmbed(Member user, Member member, String reason, TextChannel channel, Guild guild) {
+	private void warnEmbed(Member user, Member member, String reason, MessageChannel channel, Guild guild) {
 		EmbedBuilder b = new EmbedBuilder();
 		String imageUrl = member.getUser().getAvatarUrl();
 		warns++;
@@ -112,11 +112,11 @@ public class Warn extends Command{
 		b.addField("Warned by", user.getEffectiveName(), true);
 		b.addField("Reason", reason, true);
 		b.addField("Warning #", ""+warns+"", false);
-		guild.getTextChannelById(config.getJSONObject("channels").getString("logs")).sendMessage(b.build()).queue();
-		channel.sendMessage(b.build()).queue();
+		guild.getTextChannelById(config.getJSONObject("channels").getString("logs")).sendMessageEmbeds(b.build()).queue();
+		channel.sendMessageEmbeds(b.build()).queue();
 	}
 	
-	private void commandError(Member author, TextChannel channel) {
+	private void commandError(Member author, MessageChannel channel) {
 		EmbedBuilder b = new EmbedBuilder();
 		
 		b.setTitle("Command Execution Error");
@@ -125,6 +125,6 @@ public class Warn extends Command{
 		b.setDescription("There was an error when running this command");
 		b.addField("Possible Reasons", "•\t***The user you were trying to warn does not exist in this server***\n •\t***There was no user mentioned***\n •\t***A reason for this warning was not specified***", false);
 		b.addField("Proper Usage", "`"+config.getString("prefix")+"warn [user] [reason]`", false);
-		channel.sendMessage(b.build()).queue();
+		channel.sendMessageEmbeds(b.build()).queue();
 	}
 }

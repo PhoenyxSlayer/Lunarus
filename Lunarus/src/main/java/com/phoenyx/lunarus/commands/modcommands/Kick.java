@@ -16,7 +16,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 
 public class Kick extends Command{
 	public Kick() {
@@ -28,7 +28,7 @@ public class Kick extends Command{
 	private JSONObject config = Lunarus.config;
 	
 	protected void execute(CommandEvent e) {
-		TextChannel channel = e.getTextChannel();
+		MessageChannel channel = e.getChannel();
 		String args[] = e.getArgs().split(" "), avatar = e.getMember().getUser().getAvatarUrl(), embedChannel = Lunarus.config.getJSONObject("channels").getString("welcome");
 		String id = args[0].replaceAll("<@", "").replaceAll(">", "");
 		Member user = e.getMember(), member = null, errorAuthor = e.getSelfMember();
@@ -95,7 +95,7 @@ public class Kick extends Command{
 		 b.setDescription(""+member.getEffectiveName()+" has been kicked");
 		 b.addField("Kicked By", user.getEffectiveName(), true);
 		 b.addField("Reason", reason, true);
-		 guild.getTextChannelById(channel).sendMessage(b.build()).queue(r -> {
+		 guild.getTextChannelById(channel).sendMessageEmbeds(b.build()).queue(r -> {
 			 EmbedBuilder n = new EmbedBuilder();
 			 n.setTitle("Kicked");
 			 n.setAuthor(member.getEffectiveName(), avatar, avatar);
@@ -103,12 +103,12 @@ public class Kick extends Command{
 			 n.setDescription("You were kicked from "+guild.getName()+"");
 			 n.addField("Kicked By", user.getEffectiveName(), true);
 			 n.addField("Reason", reason, true);
-			 guild.getTextChannelById(config.getJSONObject("channels").getString("logs")).sendMessage(b.build()).queue();
-			 guild.getMemberById(member.getId()).getUser().openPrivateChannel().flatMap(c -> c.sendMessage(n.build())).queue();
+			 guild.getTextChannelById(config.getJSONObject("channels").getString("logs")).sendMessageEmbeds(b.build()).queue();
+			 guild.getMemberById(member.getId()).getUser().openPrivateChannel().flatMap(c -> c.sendMessageEmbeds(n.build())).queue();
 		 });
 	}
 	
-	private void commandError(Member author, TextChannel channel) {
+	private void commandError(Member author, MessageChannel channel) {
 		EmbedBuilder b = new EmbedBuilder();
 		
 		b.setTitle("Command Execution Error");
@@ -117,6 +117,6 @@ public class Kick extends Command{
 		b.setDescription("There was an error when running this command");
 		b.addField("Possible Reasons", "•\t***The user you were trying to kick does not exist in this server***\n •\t***There was no user mentioned***\n •\t***A reason for kicking this user was not specified***", false);
 		b.addField("Proper Usage", "`"+config.getString("prefix")+"kick [user] [reason]`", false);
-		channel.sendMessage(b.build()).queue();
+		channel.sendMessageEmbeds(b.build()).queue();
 	}
 }

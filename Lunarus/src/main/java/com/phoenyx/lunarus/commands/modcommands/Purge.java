@@ -3,7 +3,6 @@ package com.phoenyx.lunarus.commands.modcommands;
 import java.awt.Color;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-//import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -18,12 +17,12 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageHistory;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 
 public class Purge extends Command{
 	public Purge() {
 		this.name = "purge";
-		this.aliases = new String[] {"clean", "clear", "c", "pr"};
+		this.aliases = new String[] {"clean", "clear", "c"};
 	}
 	
 	JSONObject config = Lunarus.config;
@@ -32,13 +31,13 @@ public class Purge extends Command{
 		String args[] = e.getArgs().split(" ");
 		int num = 0;
 		Member member = e.getMember(), errorAuthor = e.getSelfMember();
-		TextChannel channel = e.getTextChannel();
+		MessageChannel channel = e.getChannel();
 		
 		if(!member.hasPermission(Permission.MESSAGE_MANAGE)) return;
 
 		e.getMessage().delete().queue();
 		try {
-			TimeUnit.MILLISECONDS.sleep(150);
+			TimeUnit.MILLISECONDS.sleep(200);
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
@@ -52,7 +51,7 @@ public class Purge extends Command{
 		clearMessages(num, channel, errorAuthor);
 	}
 	
-	public void clearMessages(int num, TextChannel channel, Member author) {
+	public void clearMessages(int num, MessageChannel channel, Member author) {
 		MessageHistory history = new MessageHistory(channel);
 		List<Message> msgs;
 		OffsetDateTime time = OffsetDateTime.now();
@@ -68,7 +67,7 @@ public class Purge extends Command{
 		for(int i = 0; i < msgs.size(); i++) {
 			if(msgs.isEmpty()) {
 				return;
-			}else if(msgs.get(i).getTimeCreated().isBefore(time.minusWeeks(2))) {
+			}else if(msgs.get(i).getTimeCreated().getDayOfYear() <= time.minusWeeks(2).getDayOfYear()) {
 				toDelete.add(msgs.get(i));
 			}
 		}
@@ -80,7 +79,7 @@ public class Purge extends Command{
 			channel.sendMessage("``Not enough messages to clean this channel (2 or more messages that are less than or equal to 2 weeks old are required for me to clear this channel)``").queue();
 			return;
 		}
-		channel.deleteMessages(msgs).queue();
+		channel.purgeMessages(msgs);
 		channel.sendMessage("Cleared "+msgs.size()+" messages!").queue(m ->{
 			try {
 				TimeUnit.SECONDS.sleep(5);
@@ -91,7 +90,7 @@ public class Purge extends Command{
 		});
 	}
 	
-	private void commandError(Member author, TextChannel channel) {
+	private void commandError(Member author, MessageChannel channel) {
 		EmbedBuilder b = new EmbedBuilder();
 		String aliases = "";
 		
@@ -105,6 +104,6 @@ public class Purge extends Command{
 		b.addField("Possible Reasons", "•\t***Argument entered is not a number or no number was entered***\n •\t***The number entered is outside the range of deleteable messages***", false);
 		b.addField("Example Usage", ""+config.getString("prefix")+"purge [# of messages] (2-100)", true);
 		b.addField("Aliases", aliases.toString(), true);
-		channel.sendMessage(b.build()).queue();
+		channel.sendMessageEmbeds(b.build()).queue();
 	}
 }

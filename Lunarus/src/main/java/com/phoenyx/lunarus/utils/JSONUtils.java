@@ -11,12 +11,11 @@ import org.json.JSONObject;
 
 public class JSONUtils {
 	public static JSONObject readJSON(File source) throws IOException {
-        String         json = "";
-        BufferedReader in   = new BufferedReader(new FileReader(source));
-        String         line;
+        String json = "";
+        BufferedReader in = new BufferedReader(new FileReader(source));
+        String line;
         while ((line = in.readLine()) != null)
-            if (!line.equals(""))
-                json += line;
+            if (!line.equals("")) json += line;
         in.close();
         return new JSONObject(json);
     }

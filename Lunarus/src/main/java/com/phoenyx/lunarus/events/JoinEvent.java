@@ -1,5 +1,7 @@
 package com.phoenyx.lunarus.events;
 
+import java.awt.Color;
+
 import org.json.JSONObject;
 
 import com.phoenyx.lunarus.Lunarus;
@@ -11,7 +13,7 @@ import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class JoinEvent extends ListenerAdapter{
-	
+	private JSONObject config = Lunarus.config;
 	@Override
 	public void onGuildMemberJoin(GuildMemberJoinEvent e) {
 		JSONObject channel = Lunarus.config.getJSONObject("channels");
@@ -26,13 +28,14 @@ public class JoinEvent extends ListenerAdapter{
 		b.setTitle("Welcome to "+server+"");
 		b.setAuthor(member, imageUrl, imageUrl);
 		b.setThumbnail(avatar);
-		//b.setColor(Color.decode(embed));
+		b.setColor(Color.decode(config.getString("embed")));
 		b.setDescription("Make yourself at home! I hope you'll enjoy your stay and behave!");
 		b.addField("Who Joined? ", e.getUser().getAsMention(), true);
 		b.addField("Member #", ""+memberCount+"", true);
 		b.addField("What to do now?", "**1.** Read the <#"+channel.getString("rules")+">\n**2.** Pick your roles in the <#"+channel.getString("roles")+"> (optional)\n**3.** Post an intro in <#"+channel.getString("introductions")+"> (optional)\n**4.** Make friends, have fun, be nice!", false);
-		e.getGuild().getTextChannelById(channel.getString("welcome")).sendMessage(b.build()).queue();
+		e.getGuild().getTextChannelById(channel.getString("welcome")).sendMessageEmbeds(b.build()).queue();
 		
+		if(role == null) return;
 		e.getGuild().addRoleToMember(m, role).queue();
 	}
 }
