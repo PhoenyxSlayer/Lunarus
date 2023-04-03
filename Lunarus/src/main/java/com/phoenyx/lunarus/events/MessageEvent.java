@@ -40,10 +40,9 @@ public class MessageEvent extends ListenerAdapter{
 		}else {
 			role = member.getRoles().get(0).toString();
 			System.out.println("["+guild.getName()+"] ["+channel.getName()+"] ["+role.replaceAll("R:", "").substring(0, role.length() - 22)+"]"+member.getEffectiveName()+": "+message+"");
-		}
+		}		
 		
-		
-		if(member == guild.getSelfMember()) return;
+		if(member == guild.getSelfMember() || e.getAuthor().isBot() || e.getAuthor().isSystem()) return;
 		if(member.getRoles().contains(guild.getRoleById("838621059396665384"))) return;
 		if(message.startsWith(config.getString("prefix"))) return;
 		if(message.startsWith("/")) return;
